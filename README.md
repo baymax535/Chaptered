@@ -32,6 +32,7 @@ npm run dev
 
 
 ## Project Structure
+```sh
 Chaptered/
 │── WebApp/               # Frontend of the application
 │   ├── public/           # Static assets (logos, images, etc.)
@@ -49,3 +50,4 @@ Chaptered/
 │── database/             # SQL database setup & migrations
 │   
 │── README.md             # Project documentation
+```
