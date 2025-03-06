@@ -1,0 +1,80 @@
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  width: 100%;
+}
+
+.hero-section {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.hero-section h1 {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #646cff, #813eff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  color: #888;
+  margin-bottom: 2rem;
+}
+
+.features-section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.feature-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 2rem;
+  width: 300px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card h2 {
+  margin-bottom: 1rem;
+  color: #646cff;
+}
+
+.api-status {
+  margin-top: 2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;
+  text-align: center;
+}
+
+.status-ok {
+  background-color: rgba(39, 174, 96, 0.1);
+  color: #27ae60;
+}
+
+.status-error {
+  background-color: rgba(231, 76, 60, 0.1);
+  color: #e74c3c;
+}
+
+.status-loading {
+  background-color: rgba(241, 196, 15, 0.1);
+  color: #f1c40f;
+} 
