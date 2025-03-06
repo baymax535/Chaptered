@@ -1,0 +1,111 @@
+.books-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.books-container h1 {
+  margin-bottom: 2rem;
+  text-align: center;
+  color: #646cff;
+}
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.book-card {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+}
+
+.book-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.book-card-header h2 {
+  font-size: 1.5rem;
+  margin: 0;
+}
+
+.book-rating {
+  background-color: #646cff;
+  color: white;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.book-author {
+  color: #aaa;
+  margin-bottom: 0.5rem;
+}
+
+.book-genre {
+  font-size: 0.9rem;
+  color: #888;
+  margin-bottom: 1rem;
+}
+
+.book-summary {
+  flex-grow: 1;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.book-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.btn-primary {
+  background-color: #646cff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #535bf2;
+}
+
+.btn-secondary {
+  background-color: rgba(100, 108, 255, 0.1);
+  color: #646cff;
+}
+
+.btn-secondary:hover {
+  background-color: rgba(100, 108, 255, 0.2);
+}
+
+.loading, .error, .no-books {
+  text-align: center;
+  padding: 2rem;
+  width: 100%;
+}
+
+.error {
+  color: #e74c3c;
+} 
