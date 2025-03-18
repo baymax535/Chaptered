@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { checkApiStatus } from '../services/api';
+import './home.css';
 
 function Home() {
   const [apiStatus, setApiStatus] = useState({
@@ -9,11 +10,8 @@ function Home() {
   });
 
   useEffect(() => {
-    console.log('Attempting to connect to API at:', import.meta.env.DEV ? 'http://localhost:8006' : '/api');
-    
     checkApiStatus()
       .then(response => {
-        console.log('API Response:', response.data);
         setApiStatus({
           loaded: true,
           status: response.data.status,
@@ -23,43 +21,39 @@ function Home() {
         });
       })
       .catch(error => {
-        console.error('API Error Details:', {
-          message: error.message,
-          config: error.config,
-          code: error.code,
-          response: error.response
-        });
         setApiStatus({
           loaded: true,
           status: 'error',
-          error: `${error.message}. Make sure Django is running on port 8006.`
+          error: 'Failed to connect to API. Make sure the backend is running.'
         });
       });
   }, []);
 
   return (
     <div className="home-container">
-      <div className="hero-section">
-        <h1>Chaptered</h1>
-        <p className="subtitle">Discover, summarize, and review books & movies</p>
-      </div>
+      <section className="hero-section">
+        <h1>Welcome to Chaptered</h1>
+        <p className="subtitle">Discover, Review, and Share Your Thoughts on Books & Movies</p>
+        <a href="/books" className="cta-button">Explore Books</a>
+        <a href="/movies" className="cta-button secondary">Explore Movies</a>
+      </section>
 
-      <div className="features-section">
+      <section className="features-section">
         <div className="feature-card">
           <h2>Browse</h2>
-          <p>Explore our extensive collection of books and movies</p>
+          <p>Explore our vast collection of books and movies.</p>
         </div>
         <div className="feature-card">
           <h2>Review</h2>
-          <p>Share your thoughts and read what others think</p>
+          <p>Share your thoughts and read what others think.</p>
         </div>
         <div className="feature-card">
           <h2>Save</h2>
-          <p>Create your personal collections and wishlists</p>
+          <p>Create your personal collections and wishlists.</p>
         </div>
-      </div>
+      </section>
 
-      <div className="api-status">
+      <section className="api-status">
         {apiStatus.loaded ? (
           apiStatus.status === 'running' ? (
             <div className="status-ok">
@@ -75,7 +69,7 @@ function Home() {
             <p>Connecting to API...</p>
           </div>
         )}
-      </div>
+      </section>
     </div>
   );
 }

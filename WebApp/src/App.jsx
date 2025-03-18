@@ -1,9 +1,11 @@
-import { useState } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import Home from './pages/home'
-import Books from './pages/books'
-import Navbar from './components/navbar'
-import './App.css'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/home';
+import Books from './pages/books';
+import Movies from './pages/movies';
+import Login from './pages/login';
+import Register from './pages/register';
+import Navbar from './components/navbar';
+import './App.css';
 
 function App() {
   return (
@@ -14,12 +16,14 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/books" element={<Books />} />
-            {/* Add more routes as needed */}
+            <Route path="/movies" element={<Movies />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </main>
       </div>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
