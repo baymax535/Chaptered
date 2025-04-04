@@ -16,6 +16,7 @@
   --hover-color: #747bff;
   --button-bg: #f9f9f9;
   --button-hover: #e0e0e0;
+  --text-color-secondary: #666;
 }
 
 /* Dark Mode */
@@ -25,6 +26,7 @@
     --background-color: #242424;
     --button-bg: #1a1a1a;
     --button-hover: #2c2c2c;
+    --text-color-secondary: #aaa;
   }
 }
 
@@ -36,6 +38,10 @@ body {
   min-width: 320px;
   min-height: 100vh;
   transition: background-color 0.3s, color 0.3s;
+}
+
+body.dark-mode {
+  --text-color-secondary: #aaa;
 }
 
 /* Links */

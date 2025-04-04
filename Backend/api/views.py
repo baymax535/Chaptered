@@ -47,11 +47,12 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 class BookViewSet(viewsets.ModelViewSet):
     """ViewSet for the Book model"""
-    queryset = Book.objects.all()
+    queryset = Book.objects.all().order_by('id')
     serializer_class = BookSerializer
-    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['genre', 'publication_year']
-    search_fields = ['title', 'author']
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
+    search_fields = ['title', 'author', 'genre']
+    ordering_fields = ['title', 'author', 'publication_year']
+    pagination_class = None
     
     def get_permissions(self):
         """Allow anyone to view books, but require authentication for other actions"""
@@ -61,13 +62,14 @@ class BookViewSet(viewsets.ModelViewSet):
 
 class MovieViewSet(viewsets.ModelViewSet):
     """ViewSet for Movie model"""
-    queryset = Movie.objects.all()
+    queryset = Movie.objects.all().order_by('id')
     serializer_class = MovieSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['genre', 'release_year']
     search_fields = ['title', 'director', 'summary']
     ordering_fields = ['title', 'release_year']
+    pagination_class = None
 
 class ReviewViewSet(viewsets.ModelViewSet):
     """ViewSet for Review model"""

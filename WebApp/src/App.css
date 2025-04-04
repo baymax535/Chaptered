@@ -12,13 +12,17 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-start;
   text-align: center;
   background: var(--background-color);
   color: var(--text-color);
-  padding: 5rem 2rem 2rem; /* More space below navbar */
+  padding-top: 5rem;
+  padding-bottom: 2rem;
+  padding-left: 0;
+  padding-right: 0;
   transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
 }
 
 /* Root Variables */
@@ -121,4 +125,18 @@ button:hover {
     font-size: 0.9rem;
     padding: 12px 20px;
   }
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.app-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }

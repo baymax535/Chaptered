@@ -33,6 +33,8 @@ export const authService = {
 // Book services
 export const bookService = {
   getAll: (params) => api.get('/api/books/', { params }),
+  getAllPaginated: (page = 1, limit = 100) => 
+    api.get('/api/books/', { params: { page, limit } }),
   getById: (id) => api.get(`/api/books/${id}/`),
   create: (data) => api.post('/api/books/', data),
   update: (id, data) => api.put(`/api/books/${id}/`, data),
@@ -42,6 +44,8 @@ export const bookService = {
 // Movie services
 export const movieService = {
   getAll: (params) => api.get('/api/movies/', { params }),
+  getAllPaginated: (page = 1, limit = 100) => 
+    api.get('/api/movies/', { params: { page, limit } }),
   getById: (id) => api.get(`/api/movies/${id}/`),
   create: (data) => api.post('/api/movies/', data),
   update: (id, data) => api.put(`/api/movies/${id}/`, data),
