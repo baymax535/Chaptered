@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { bookService } from '../services/api';
 import './books.css';
+import { Link } from 'react-router-dom';
 
 const BookIcon = () => (
   <div className="no-image">📚</div>
@@ -89,6 +90,33 @@ function Books() {
     setCurrentPage(1);
   };
 
+  const renderBookList = () => {
+    return books
+      .filter(book => 
+        book.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (selectedGenre === '' || (book.categories && book.categories.includes(selectedGenre)))
+      )
+      .slice((currentPage - 1) * booksPerPage, currentPage * booksPerPage)
+      .map(book => (
+        <Link to={`/books/${book.id}`} key={book.id} className="book-card">
+          <div className="book-cover">
+            {getBookCover(book)}
+          </div>
+          <div className="book-info">
+            <h3 className="book-title">{book.title}</h3>
+            {book.authors && book.authors[0] && (
+              <p className="book-author">{book.authors[0]}</p>
+            )}
+            {book.average_rating && (
+              <div className="book-rating">
+                <StarIcon /> {book.average_rating.toFixed(1)}
+              </div>
+            )}
+          </div>
+        </Link>
+      ));
+  };
+
   if (loading) return <div className="loading">Loading books...</div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -132,27 +160,7 @@ function Books() {
       {/* Books grid */}
       <div className="books-grid">
         {currentBooks.length > 0 ? (
-          currentBooks.map(book => (
-            <div className="book-card" key={book.id}>
-              <div className="book-cover">
-                {getBookCover(book)}
-              </div>
-              <div className="book-info">
-                <h3 className="book-title">{book.title}</h3>
-                <div className="book-author">by {book.author}</div>
-                <div className="book-genre">{book.genre} • {book.publication_year}</div>
-                {book.avg_rating && (
-                  <div className="book-rating">
-                    <StarIcon /> {book.avg_rating.toFixed(1)}
-                  </div>
-                )}
-                <div className="book-actions">
-                  <button className="btn-primary">Reviews</button>
-                  <button className="btn-secondary">+ List</button>
-                </div>
-              </div>
-            </div>
-          ))
+          renderBookList()
         ) : (
           <div className="no-books">No books found matching your criteria</div>
         )}

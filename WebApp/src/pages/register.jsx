@@ -21,10 +21,35 @@ function Register() {
     }
     
     try {
-      await authService.register({ name, email, password });
+      const response = await authService.register({ 
+        name, 
+        email, 
+        password, 
+        confirmPassword
+      });
+      console.log('Registration successful:', response);
       navigate('/login'); // Redirect to login after successful registration
     } catch (err) {
-      setError(err.response?.data?.detail || 'Registration failed. Try again.');
+      console.error('Registration error:', err);
+      if (err.response?.data) {
+        const errorData = err.response.data;
+        let errorMsg = '';
+        
+        if (typeof errorData === 'object') {
+          Object.keys(errorData).forEach(key => {
+            const fieldErrors = Array.isArray(errorData[key]) 
+              ? errorData[key].join(', ')
+              : errorData[key];
+            errorMsg += `${key}: ${fieldErrors}\n`;
+          });
+        } else {
+          errorMsg = String(errorData);
+        }
+        
+        setError(errorMsg || 'Registration failed. Try again.');
+      } else {
+        setError('Registration failed. Please try again later.');
+      }
     }
   };
 

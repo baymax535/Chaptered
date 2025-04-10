@@ -75,10 +75,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
     """ViewSet for Review model"""
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
     filterset_fields = ['media', 'user', 'rating']
     ordering_fields = ['created_at', 'rating']
+    
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [permissions.AllowAny()]
+        return [permissions.IsAuthenticated()]
     
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -86,8 +90,16 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = Review.objects.all()
         media_id = self.request.query_params.get('media_id')
+        book_id = self.request.query_params.get('book_id')
+        movie_id = self.request.query_params.get('movie_id')
+        
         if media_id:
             queryset = queryset.filter(media_id=media_id)
+        elif book_id:
+            queryset = queryset.filter(media_id=book_id)
+        elif movie_id:
+            queryset = queryset.filter(media_id=movie_id)
+            
         return queryset
 
 class FavoriteViewSet(viewsets.ModelViewSet):

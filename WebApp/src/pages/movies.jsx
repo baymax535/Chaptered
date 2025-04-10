@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { movieService } from '../services/api';
 import './movies.css';
+import { Link } from 'react-router-dom';
 
 const MovieIcon = () => (
   <div className="no-image">🎬</div>
@@ -69,13 +70,13 @@ function Movies() {
       movie.director.toLowerCase().includes(searchTerm.toLowerCase());
       
     const matchesGenre = selectedGenre === '' || 
-      (movie.genre && movie.genre.toLowerCase().includes(selectedGenre.toLowerCase()));
+      (movie.genres && movie.genres.some(g => g.name === selectedGenre));
       
     return matchesSearch && matchesGenre;
   });
 
   const genres = [...new Set(movies
-    .map(movie => movie.genre)
+    .map(movie => movie.genres && movie.genres.map(g => g.name))
     .filter(Boolean)
     .flatMap(genre => genre.split(', ')))
   ].sort();
@@ -90,6 +91,33 @@ function Movies() {
   const handleSearch = (e) => {
     e.preventDefault();
     setCurrentPage(1);
+  };
+
+  const renderMovieList = () => {
+    return movies
+      .filter(movie => 
+        movie.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        (selectedGenre === '' || (movie.genres && movie.genres.some(g => g.name === selectedGenre)))
+      )
+      .slice((currentPage - 1) * moviesPerPage, currentPage * moviesPerPage)
+      .map(movie => (
+        <Link to={`/movies/${movie.id}`} key={movie.id} className="movie-card">
+          <div className="movie-poster">
+            {getMoviePoster(movie)}
+          </div>
+          <div className="movie-info">
+            <h3 className="movie-title">{movie.title}</h3>
+            {movie.release_date && (
+              <p className="movie-year">{movie.release_date.substring(0, 4)}</p>
+            )}
+            {movie.vote_average && (
+              <div className="movie-rating">
+                <StarIcon /> {movie.vote_average.toFixed(1)}
+              </div>
+            )}
+          </div>
+        </Link>
+      ));
   };
 
   if (loading) return <div className="loading">Loading movies...</div>;
@@ -135,27 +163,7 @@ function Movies() {
       {/* Movies grid */}
       <div className="movies-grid">
         {currentMovies.length > 0 ? (
-          currentMovies.map(movie => (
-            <div className="movie-card" key={movie.id}>
-              <div className="movie-poster">
-                {getMoviePoster(movie)}
-              </div>
-              <div className="movie-info">
-                <h3 className="movie-title">{movie.title}</h3>
-                <div className="movie-director">Dir. {movie.director}</div>
-                <div className="movie-genre">{movie.genre} • {movie.release_year}</div>
-                {movie.avg_rating && (
-                  <div className="movie-rating">
-                    <StarIcon /> {movie.avg_rating.toFixed(1)}
-                  </div>
-                )}
-                <div className="movie-actions">
-                  <button className="btn-primary">Reviews</button>
-                  <button className="btn-secondary">+ List</button>
-                </div>
-              </div>
-            </div>
-          ))
+          renderMovieList()
         ) : (
           <div className="no-movies">No movies found matching your criteria</div>
         )}

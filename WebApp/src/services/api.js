@@ -11,13 +11,59 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const publicEndpoints = ['/api/books/', '/api/movies/', '/api/auth/register/'];
+    const isPublicEndpoint = publicEndpoints.some(endpoint => 
+      config.url.startsWith(endpoint) && (
+        config.method === 'get' || 
+        config.method === 'post' || 
+        !config.method
+      )
+    );
+    
+    if (!isPublicEndpoint) {
+      const token = localStorage.getItem('access_token');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
     }
     return config;
   },
   (error) => Promise.reject(error)
+);
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      
+      try {
+        const refreshToken = localStorage.getItem('refresh_token');
+        if (!refreshToken) {
+          return Promise.reject(error);
+        }
+        
+        const response = await axios.post(`${API_URL}/api/auth/token/refresh/`, {
+          refresh: refreshToken
+        });
+        
+        localStorage.setItem('access_token', response.data.access);
+        
+        originalRequest.headers.Authorization = `Bearer ${response.data.access}`;
+        
+        return axios(originalRequest);
+      } catch (refreshError) {
+        console.error('Token refresh failed:', refreshError);
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
+        return Promise.reject(error);
+      }
+    }
+    
+    return Promise.reject(error);
+  }
 );
 
 export const checkApiStatus = () => {
@@ -25,8 +71,24 @@ export const checkApiStatus = () => {
 };
 
 export const authService = {
-  register: (userData) => api.post('/api/auth/register/', userData),
-  login: (credentials) => api.post('/api/auth/token/', credentials),
+  register: (userData) => {
+    const formattedData = {
+      username: userData.email.split('@')[0], 
+      email: userData.email,
+      password: userData.password,
+      password_confirm: userData.confirmPassword
+    };
+    console.log('Sending registration data:', formattedData);
+    return api.post('/api/auth/register/', formattedData);
+  },
+  login: (credentials) => {
+    const loginData = {
+      username: credentials.email.split('@')[0], 
+      password: credentials.password,
+    };
+    console.log('Sending login data:', loginData);
+    return api.post('/api/auth/token/', loginData);
+  },
   refreshToken: (refresh) => api.post('/api/auth/token/refresh/', { refresh }),
 };
 
