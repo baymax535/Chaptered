@@ -1,0 +1,142 @@
+/* General Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif; /* Back to original font */
+}
+
+/* Full-Screen Root */
+#root {
+  width: 100vw;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  text-align: center;
+  background: var(--background-color);
+  color: var(--text-color);
+  padding-top: 5rem;
+  padding-bottom: 2rem;
+  padding-left: 0;
+  padding-right: 0;
+  transition: background 0.3s, color 0.3s;
+  overflow-x: hidden;
+}
+
+/* Root Variables */
+:root {
+  --primary-color: #646cff;
+  --secondary-color: #535bf2;
+  --text-color: #222;
+  --background-color: #f9f9f9;
+  --card-bg: #ffffff;
+  --border-color: #e5e7eb;
+}
+
+body.dark-mode {
+  --text-color: #f9fafb;
+  --background-color: #1e1e2e;
+  --card-bg: #25293b;
+  --border-color: #4b5563;
+}
+
+/* Navbar Spacing */
+.navbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+/* Hero Section (Welcome Text) */
+.hero-section {
+  margin-top: 6rem; /* Added more space from navbar */
+}
+
+.hero-section h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* Stylish Card */
+.card {
+  padding: 2.5rem;
+  background: var(--card-bg);
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+  max-width: 600px;
+  width: 100%;
+  margin-top: 2rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Read-the-Docs Section */
+.read-the-docs {
+  color: var(--text-color);
+  font-size: 1rem;
+  margin-top: 1.5rem;
+  opacity: 0.8;
+}
+
+/* Buttons */
+button {
+  padding: 14px 24px;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+  background: var(--primary-color);
+  color: white;
+}
+
+button:hover {
+  background: var(--secondary-color);
+  transform: scale(1.05);
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  #root {
+    padding: 6rem 1.5rem 2rem; /* More top space */
+  }
+
+  .hero-section h1 {
+    font-size: 2.5rem;
+  }
+
+  .card {
+    padding: 2rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+    padding: 12px 20px;
+  }
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.app-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
