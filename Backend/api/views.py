@@ -50,11 +50,7 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all().order_by('id')
     serializer_class = BookSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-<<<<<<< HEAD
     search_fields = ['title', 'author', 'genre', 'summary'] # Added 'summary'
-=======
-    search_fields = ['title', 'author', 'genre']
->>>>>>> e52135338f7de1e3520460255b08674c7b8495c2
     ordering_fields = ['title', 'author', 'publication_year']
     pagination_class = None
     
@@ -71,11 +67,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['genre', 'release_year']
-<<<<<<< HEAD
     search_fields = ['title', 'director', 'summary', 'genre'] # Added 'genre'
-=======
-    search_fields = ['title', 'director', 'summary']
->>>>>>> e52135338f7de1e3520460255b08674c7b8495c2
     ordering_fields = ['title', 'release_year']
     pagination_class = None
 
@@ -156,7 +148,6 @@ def media_recommendations(request):
         'personalized': False,
         'books': BookSerializer(top_books, many=True).data,
         'movies': MovieSerializer(top_movies, many=True).data
-<<<<<<< HEAD
     })
 
 @api_view(['GET'])
@@ -170,8 +161,3 @@ def latest_movies(request):
     """Return the 5 newest movies"""
     newest = Movie.objects.order_by('-release_year')[:5]
     return Response(MovieSerializer(newest, many=True).data)
-
- 
-=======
-    }) 
->>>>>>> e52135338f7de1e3520460255b08674c7b8495c2

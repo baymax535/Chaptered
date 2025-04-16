@@ -123,11 +123,8 @@ function Books() {
   return (
     <div className="books-container">
       <h1>Explore Books</h1>
-<<<<<<< HEAD
 
       <Link to="/latest-books" className="latest-link-button">📚 View Latest Books</Link>
-=======
->>>>>>> e52135338f7de1e3520460255b08674c7b8495c2
       
       {/* Search and filter controls */}
       <div className="books-controls">
@@ -244,4 +241,4 @@ function Books() {
   );
 }
 
-export default Books; 
+export default Books;

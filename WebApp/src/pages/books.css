@@ -55,12 +55,8 @@
 
 .books-grid {
   display: grid;
-<<<<<<< HEAD
   grid-template-columns: repeat(auto-fill, minmax(130px, 130px));
   justify-content: center;
-=======
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
->>>>>>> e52135338f7de1e3520460255b08674c7b8495c2
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -307,7 +303,6 @@
   font-size: 3rem;
   font-weight: bold;
   color: white;
-<<<<<<< HEAD
 }
 
 .latest-link-button {
@@ -357,6 +352,3 @@
   gap: 1rem;
   margin-bottom: 2rem;
 }
-=======
-} 
->>>>>>> e52135338f7de1e3520460255b08674c7b8495c2

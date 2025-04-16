@@ -5,12 +5,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .views import (
     UserRegistrationView, UserProfileViewSet, BookViewSet,
     MovieViewSet, ReviewViewSet, FavoriteViewSet,
-<<<<<<< HEAD
     user_favorites, media_recommendations,
     latest_books, latest_movies
-=======
-    user_favorites, media_recommendations
->>>>>>> e52135338f7de1e3520460255b08674c7b8495c2
 )
 
 router = DefaultRouter()
@@ -29,11 +25,8 @@ urlpatterns = [
     
     path('user/favorites/', user_favorites, name='user-favorites'),
     path('recommendations/', media_recommendations, name='media-recommendations'),
-<<<<<<< HEAD
 
     path('latest/books/', latest_books, name='latest-books'),
     path('latest/movies/', latest_movies, name='latest-movies'),
 
-=======
->>>>>>> e52135338f7de1e3520460255b08674c7b8495c2
 ] 

@@ -127,11 +127,8 @@ function Movies() {
     <div className="movies-container">
       <h1>Explore Movies</h1>
       
-<<<<<<< HEAD
       <Link to="/latest-movies" className="latest-link-button">🎬 View Latest Movies</Link>
 
-=======
->>>>>>> e52135338f7de1e3520460255b08674c7b8495c2
       {/* Search and filter controls */}
       <div className="movies-controls">
         <form className="search-box" onSubmit={handleSearch}>
