@@ -11,6 +11,17 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+api.interceptors.request.use(
+  (config) => {
     const publicEndpoints = ['/api/books/', '/api/movies/', '/api/auth/register/'];
     const isPublicEndpoint = publicEndpoints.some(endpoint => 
       config.url.startsWith(endpoint) && (
@@ -123,4 +134,4 @@ export const reviewService = {
   delete: (id) => api.delete(`/api/reviews/${id}/`),
 };
 
-export default api; 
+export default api;

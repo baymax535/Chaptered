@@ -52,24 +52,6 @@ function Home() {
           <p>Create your personal collections and wishlists.</p>
         </div>
       </section>
-
-      <section className="api-status">
-        {apiStatus.loaded ? (
-          apiStatus.status === 'running' ? (
-            <div className="status-ok">
-              <p>✅ Connected to {apiStatus.name} v{apiStatus.version}</p>
-            </div>
-          ) : (
-            <div className="status-error">
-              <p>❌ API Connection Error: {apiStatus.error}</p>
-            </div>
-          )
-        ) : (
-          <div className="status-loading">
-            <p>Connecting to API...</p>
-          </div>
-        )}
-      </section>
     </div>
   );
 }

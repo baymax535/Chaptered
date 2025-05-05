@@ -27,6 +27,11 @@ function Register() {
         password, 
         confirmPassword
       });
+      if (response.data && response.data.user) {
+        localStorage.setItem('username', response.data.user.username || '');
+        localStorage.setItem('email', response.data.user.email || '');
+        localStorage.setItem('user_id', response.data.user.id ? String(response.data.user.id) : '');
+      }
       console.log('Registration successful:', response);
       navigate('/login'); // Redirect to login after successful registration
     } catch (err) {

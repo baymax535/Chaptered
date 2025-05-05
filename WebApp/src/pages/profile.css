@@ -1,0 +1,93 @@
+.profile-card {
+    max-width: 360px;
+    margin: 2rem auto;
+    background: var(--card-bg, #fff);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+  }
+  
+  .profile-img,
+  .avatar-fallback {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.25rem;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .avatar-fallback {
+    background: #ccc;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+  }
+  
+  .profile-fields {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.5rem 1rem;
+    text-align: left;
+    margin-bottom: 1.5rem;
+  }
+  
+  .profile-fields dt {
+    font-weight: 600;
+  }
+  
+  .profile-fields dd {
+    margin: 0;
+    color: var(--text-secondary, #555);
+  }
+  
+  .btn-primary, .btn-secondary {
+    width: 100%;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+  
+  .btn-primary {
+    background: #535bf2;
+    color: #fff;
+  }
+  
+  .btn-secondary {
+    background: #e2e8f0;
+    color: #333;
+  }
+  
+  .reset-form label {
+    display: block;
+    text-align: left;
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .reset-form input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.25rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font: inherit;
+  }
+  
+  .reset-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  
+  .reset-msg {
+    color: crimson;
+    font-size: 0.85rem;
+    margin: 0.5rem 0;
+  }
+  

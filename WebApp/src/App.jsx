@@ -8,6 +8,7 @@ import BookDetail from './pages/bookDetail';
 import MovieDetail from './pages/movieDetail';
 import Login from './pages/login';
 import Register from './pages/register';
+import Profile from './pages/profile';
 import Navbar from './components/navbar';
 import './App.css';
 
@@ -27,6 +28,7 @@ function App() {
             <Route path="/movies/:id" element={<MovieDetail />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/profile" element={<Profile />} />
           </Routes>
         </main>
       </div>

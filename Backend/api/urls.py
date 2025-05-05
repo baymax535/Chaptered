@@ -6,7 +6,8 @@ from .views import (
     UserRegistrationView, UserProfileViewSet, BookViewSet,
     MovieViewSet, ReviewViewSet, FavoriteViewSet,
     user_favorites, media_recommendations,
-    latest_books, latest_movies
+    latest_books, latest_movies,
+    password_change,
 )
 
 router = DefaultRouter()
@@ -22,6 +23,7 @@ urlpatterns = [
     path('auth/register/', UserRegistrationView.as_view(), name='register'),
     path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/password/change/', password_change, name='password-change'),
     
     path('user/favorites/', user_favorites, name='user-favorites'),
     path('recommendations/', media_recommendations, name='media-recommendations'),
@@ -29,4 +31,4 @@ urlpatterns = [
     path('latest/books/', latest_books, name='latest-books'),
     path('latest/movies/', latest_movies, name='latest-movies'),
 
-] 
+]

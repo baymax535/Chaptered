@@ -36,7 +36,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
     permission_classes = [permissions.IsAuthenticated]
-    
+    pagination_class = None 
+
     def get_queryset(self):
         if self.action == 'list':
             return UserProfile.objects.filter(user=self.request.user)
@@ -50,12 +51,11 @@ class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all().order_by('id')
     serializer_class = BookSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
-    search_fields = ['title', 'author', 'genre', 'summary'] # Added 'summary'
+    search_fields = ['title', 'author', 'genre', 'summary']
     ordering_fields = ['title', 'author', 'publication_year']
     pagination_class = None
     
     def get_permissions(self):
-        """Allow anyone to view books, but require authentication for other actions"""
         if self.action in ['list', 'retrieve']:
             return [permissions.AllowAny()]
         return [permissions.IsAuthenticated()]
@@ -67,7 +67,7 @@ class MovieViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     filterset_fields = ['genre', 'release_year']
-    search_fields = ['title', 'director', 'summary', 'genre'] # Added 'genre'
+    search_fields = ['title', 'director', 'summary', 'genre']
     ordering_fields = ['title', 'release_year']
     pagination_class = None
 
@@ -119,11 +119,25 @@ def user_favorites(request):
     """Get user's favorites and wishlists"""
     favorites = Favorite.objects.filter(user=request.user, list_type='favorite')
     wishlist = Favorite.objects.filter(user=request.user, list_type='wishlist')
-    
     return Response({
         'favorites': FavoriteSerializer(favorites, many=True).data,
         'wishlist': FavoriteSerializer(wishlist, many=True).data
     })
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def password_change(request):
+    """
+    Allow an authenticated user to change their password.
+    Expects: { "new_password": "..." }
+    """
+    user = request.user
+    new_password = request.data.get('new_password')
+    if not new_password:
+        return Response({'detail': 'New password required.'}, status=status.HTTP_400_BAD_REQUEST)
+    user.set_password(new_password)
+    user.save()
+    return Response({'detail': 'Password updated successfully.'})
 
 @api_view(['GET'])
 def media_recommendations(request):

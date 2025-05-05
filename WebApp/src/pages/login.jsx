@@ -16,6 +16,11 @@ function Login() {
       const response = await authService.login({ email, password });
       localStorage.setItem('access_token', response.data.access);
       localStorage.setItem('refresh_token', response.data.refresh);
+      if (response.data.user) {
+        localStorage.setItem('username', response.data.user.username || '');
+        localStorage.setItem('email', response.data.user.email || '');
+        localStorage.setItem('user_id', response.data.user.id ? String(response.data.user.id) : '');
+      }
       navigate('/'); // Redirect to home
     } catch (err) {
       setError(err.response?.data?.detail || 'Login failed. Please try again.');

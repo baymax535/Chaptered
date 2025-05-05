@@ -3,21 +3,48 @@ from django.contrib.auth.models import User
 from .models import Media, Book, Movie, Review, Favorite, UserProfile
 
 class UserSerializer(serializers.ModelSerializer):
-    """Serializer for the User model"""
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'date_joined']
         read_only_fields = ['date_joined']
 
 class UserProfileSerializer(serializers.ModelSerializer):
-    """Serializer for the UserProfile model"""
-    username = serializers.CharField(source='user.username', read_only=True)
-    email = serializers.EmailField(source='user.email', read_only=True)
-    
+    id = serializers.IntegerField(read_only=True)
+
+    username   = serializers.CharField(source='user.username', read_only=True)
+    email      = serializers.EmailField(source='user.email', read_only=True)
+    first_name = serializers.CharField(source='user.first_name', required=False, allow_blank=True)
+    last_name  = serializers.CharField(source='user.last_name', required=False, allow_blank=True)
+
     class Meta:
         model = UserProfile
-        fields = ['user', 'username', 'email', 'bio', 'profile_picture']
-        read_only_fields = ['user']
+        fields = [
+            'id',
+            'user',
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+            'bio',
+            'profile_picture',
+        ]
+        read_only_fields = ['id', 'user', 'username', 'email']
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user', {})
+
+        if 'first_name' in validated_data:
+            user_data['first_name'] = validated_data.pop('first_name')
+        if 'last_name' in validated_data:
+            user_data['last_name'] = validated_data.pop('last_name')
+
+        if 'first_name' in user_data:
+            instance.user.first_name = user_data['first_name']
+        if 'last_name' in user_data:
+            instance.user.last_name = user_data['last_name']
+        instance.user.save()
+
+        return super().update(instance, validated_data)
 
 class MediaSerializer(serializers.ModelSerializer):
     """Base serializer for Media model"""
@@ -103,4 +130,4 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             password=validated_data['password']
         )
         UserProfile.objects.create(user=user)
-        return user 
+        return user
