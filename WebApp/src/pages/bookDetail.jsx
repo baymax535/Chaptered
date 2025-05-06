@@ -231,7 +231,7 @@ function BookDetail() {
               reviews.map(review => (
                 <div className="review-card" key={review.id}>
                   <div className="review-header">
-                    <span className="reviewer-name">{review.user_name || 'Anonymous'}</span>
+                    <span className="reviewer-name">{review.username || 'Anonymous'}</span>
                     <span className="review-rating">
                       {Array.from({ length: review.rating }, (_, i) => (
                         <StarIcon key={i} />

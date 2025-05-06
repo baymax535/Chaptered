@@ -62,15 +62,15 @@ function Books() {
   }, []);
 
   const filteredBooks = books.filter(book => {
-    const matchesSearch = searchTerm === '' || 
-      book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      book.author.toLowerCase().includes(searchTerm.toLowerCase());
-      
-    const matchesGenre = selectedGenre === '' || 
-      (book.genre && book.genre.toLowerCase().includes(selectedGenre.toLowerCase()));
-      
-    return matchesSearch && matchesGenre;
-  });
+  const matchesSearch = searchTerm === '' ||
+    book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (book.author && book.author.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  const matchesGenre = selectedGenre === '' ||
+    (book.genre && book.genre.toLowerCase().includes(selectedGenre.toLowerCase()));
+
+  return matchesSearch && matchesGenre;
+})
 
   const genres = [...new Set(books
     .map(book => book.genre)
@@ -91,31 +91,25 @@ function Books() {
   };
 
   const renderBookList = () => {
-    return books
-      .filter(book => 
-        book.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (selectedGenre === '' || (book.categories && book.categories.includes(selectedGenre)))
-      )
-      .slice((currentPage - 1) * booksPerPage, currentPage * booksPerPage)
-      .map(book => (
-        <Link to={`/books/${book.id}`} key={book.id} className="book-card">
-          <div className="book-cover">
-            {getBookCover(book)}
+  return currentBooks.map(book => (
+    <Link to={`/books/${book.id}`} key={book.id} className="book-card">
+      <div className="book-cover">
+        {getBookCover(book)}
+      </div>
+      <div className="book-info">
+        <h3 className="book-title">{book.title}</h3>
+        {book.author && (
+          <p className="book-author">{book.author}</p>
+        )}
+        {book.avg_rating && (
+          <div className="book-rating">
+            <StarIcon /> {book.avg_rating.toFixed(1)}
           </div>
-          <div className="book-info">
-            <h3 className="book-title">{book.title}</h3>
-            {book.authors && book.authors[0] && (
-              <p className="book-author">{book.authors[0]}</p>
-            )}
-            {book.average_rating && (
-              <div className="book-rating">
-                <StarIcon /> {book.average_rating.toFixed(1)}
-              </div>
-            )}
-          </div>
-        </Link>
-      ));
-  };
+        )}
+      </div>
+    </Link>
+  ));
+};
 
   if (loading) return <div className="loading">Loading books...</div>;
   if (error) return <div className="error">{error}</div>;

@@ -59,25 +59,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'chaptered.wsgi.application'
 
-if os.getenv('USE_SQLITE', 'True') == 'True':
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'chaptered',  # Your database name
+        'USER': 'root',  # Your MySQL username
+        'PASSWORD': '1221',  # Your MySQL password
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.getenv('DB_NAME', 'chaptered'),
-            'USER': os.getenv('DB_USER', 'root'),
-            'PASSWORD': os.getenv('DB_PASSWORD', ''),
-            'HOST': os.getenv('DB_HOST', 'localhost'),
-            'PORT': os.getenv('DB_PORT', '3306'),
-        }
-    }
-
+}
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -119,6 +110,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:3000",
+    "http://localhost:5174",
+    "http://localhost:5178",
+
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -130,4 +124,4 @@ CORS_ALLOW_METHODS = [
     'PATCH',
     'POST',
     'PUT',
-] 
+]
