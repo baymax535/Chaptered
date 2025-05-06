@@ -21,20 +21,31 @@ function Register() {
     }
     
     try {
-      const response = await authService.register({ 
-        name, 
-        email, 
-        password, 
-        confirmPassword
-      });
-      if (response.data && response.data.user) {
-        localStorage.setItem('username', response.data.user.username || '');
-        localStorage.setItem('email', response.data.user.email || '');
-        localStorage.setItem('user_id', response.data.user.id ? String(response.data.user.id) : '');
-      }
-      console.log('Registration successful:', response);
-      navigate('/login'); // Redirect to login after successful registration
-    } catch (err) {
+  const response = await authService.register({
+    name,
+    email,
+    password,
+    confirmPassword
+  });
+
+  // Store authentication tokens
+  if (response.data.access) {
+    localStorage.setItem('access_token', response.data.access);
+  }
+  if (response.data.refresh) {
+    localStorage.setItem('refresh_token', response.data.refresh);
+  }
+
+  // Store user data
+  if (response.data && response.data.user) {
+    localStorage.setItem('username', response.data.user.username || '');
+    localStorage.setItem('email', response.data.user.email || '');
+    localStorage.setItem('user_id', response.data.user.id ? String(response.data.user.id) : '');
+  }
+
+  console.log('Registration successful:', response);
+  navigate('/');
+} catch (err) {
       console.error('Registration error:', err);
       if (err.response?.data) {
         const errorData = err.response.data;

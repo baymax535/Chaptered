@@ -11,18 +11,7 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
-
-api.interceptors.request.use(
-  (config) => {
-    const publicEndpoints = ['/api/books/', '/api/movies/', '/api/auth/register/'];
+    const publicEndpoints = ['/api/books/', '/api/movies/', '/api/auth/register/', '/api/auth/token/'];
     const isPublicEndpoint = publicEndpoints.some(endpoint => 
       config.url.startsWith(endpoint) && (
         config.method === 'get' || 
@@ -84,7 +73,7 @@ export const checkApiStatus = () => {
 export const authService = {
   register: (userData) => {
     const formattedData = {
-      username: userData.email.split('@')[0], 
+      username: userData.name || userData.email.split('@')[0],
       email: userData.email,
       password: userData.password,
       password_confirm: userData.confirmPassword
@@ -93,8 +82,9 @@ export const authService = {
     return api.post('/api/auth/register/', formattedData);
   },
   login: (credentials) => {
+    const storedUsername = localStorage.getItem('username');
     const loginData = {
-      username: credentials.email.split('@')[0], 
+      username: storedUsername || credentials.email.split('@')[0],
       password: credentials.password,
     };
     console.log('Sending login data:', loginData);
