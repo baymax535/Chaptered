@@ -16,14 +16,14 @@ TMDB_API_URL = "https://api.themoviedb.org/3"
 def fetch_movies():
     all_movies = []
     movie_ids = set()
-    
+
     endpoints = [
         {"path": "/movie/popular", "pages": 20, "desc": "popular movies"},
         {"path": "/movie/top_rated", "pages": 20, "desc": "top rated movies"},
         {"path": "/movie/now_playing", "pages": 10, "desc": "now playing movies"},
         {"path": "/movie/upcoming", "pages": 10, "desc": "upcoming movies"},
     ]
-    
+
     genres = [
         {"id": 28, "name": "Action"},
         {"id": 12, "name": "Adventure"},
@@ -44,7 +44,7 @@ def fetch_movies():
         {"id": 10752, "name": "War"},
         {"id": 37, "name": "Western"}
     ]
-    
+
     for endpoint in endpoints:
         for page in range(1, endpoint["pages"] + 1):
             url = f"{TMDB_API_URL}{endpoint['path']}"
@@ -53,33 +53,33 @@ def fetch_movies():
                 "language": "en-US",
                 "page": page
             }
-            
+
             try:
                 response = requests.get(url, params=params)
-                
+
                 if response.status_code == 200:
                     movies = response.json().get("results", [])
-                    
+
                     if not movies:
                         break
-                    
+
                     for movie in movies:
                         if movie["id"] in movie_ids:
                             continue
-                        
+
                         movie_ids.add(movie["id"])
                         processed_movie = process_movie(movie)
                         if processed_movie:
                             all_movies.append(processed_movie)
-                    
+
                     print(f"Fetched page {page}/{endpoint['pages']} of {endpoint['desc']} with {len(movies)} movies")
-                    
+
                 else:
                     print(f"Error fetching page {page} from {endpoint['path']}: {response.status_code}")
                     break
-                
+
                 time.sleep(0.25)
-                
+
             except Exception as e:
                 print(f"Exception fetching from {endpoint['path']}: {str(e)}")
                 time.sleep(2)
@@ -93,53 +93,58 @@ def fetch_movies():
                 "sort_by": "popularity.desc",
                 "page": page
             }
-            
+
             try:
                 response = requests.get(url, params=params)
-                
+
                 if response.status_code == 200:
                     movies = response.json().get("results", [])
-                    
+
                     if not movies:
                         break
-                    
+
                     new_movies = 0
                     for movie in movies:
                         if movie["id"] in movie_ids:
                             continue
-                        
+
                         movie_ids.add(movie["id"])
                         processed_movie = process_movie(movie)
                         if processed_movie:
                             all_movies.append(processed_movie)
                             new_movies += 1
-                    
+
                     print(f"Fetched page {page}/5 of {genre['name']} genre with {new_movies} new movies")
-                    
+
                     if new_movies == 0:
                         break
-                    
+
                 else:
                     print(f"Error fetching {genre['name']} movies page {page}: {response.status_code}")
                     break
-                
+
                 time.sleep(0.25)
-                
+
             except Exception as e:
                 print(f"Exception fetching {genre['name']} movies: {str(e)}")
                 time.sleep(2)
-    
+
     print(f"Total unique movies found: {len(all_movies)}")
-    
-    with open("scripts/data/movies.json", "w") as f:
+
+    # Ensure the data directory exists
+    os.makedirs(os.path.join(os.path.dirname(__file__), "data"), exist_ok=True)
+
+    # Use absolute path for saving the file
+    movies_json_path = os.path.join(os.path.dirname(__file__), "data", "movies.json")
+    with open(movies_json_path, "w") as f:
         json.dump(all_movies, f, indent=2)
-    
-    print(f"Saved {len(all_movies)} movies to movies.json")
+
+    print(f"Saved {len(all_movies)} movies to {movies_json_path}")
     return all_movies
 
 def process_movie(movie):
     movie_id = movie["id"]
-    
+
     try:
         details_url = f"{TMDB_API_URL}/movie/{movie_id}"
         details_params = {
@@ -147,18 +152,18 @@ def process_movie(movie):
             "language": "en-US",
             "append_to_response": "credits,keywords"
         }
-        
+
         details_response = requests.get(details_url, params=details_params)
-        
+
         if details_response.status_code == 200:
             details = details_response.json()
-            
+
             director = next((crew["name"] for crew in details.get("credits", {}).get("crew", []) 
                             if crew["job"] == "Director"), "Unknown")
-            
+
             if not movie.get("release_date"):
                 return None
-            
+
             movie_obj = {
                 "tmdb_id": movie["id"],
                 "title": movie["title"],
@@ -171,19 +176,19 @@ def process_movie(movie):
                 "vote_average": movie["vote_average"],
                 "runtime": details.get("runtime")
             }
-            
+
             time.sleep(0.25)
-            
+
             return movie_obj
-            
+
         else:
             print(f"Error fetching details for movie {movie_id}: {details_response.status_code}")
             return None
-            
+
     except Exception as e:
         print(f"Exception processing movie {movie_id}: {str(e)}")
         return None
 
 if __name__ == "__main__":
-    os.makedirs("scripts/data", exist_ok=True)
+    # This is no longer needed as we create the directory in the fetch_movies function
     fetch_movies() 
