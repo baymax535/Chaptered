@@ -105,7 +105,7 @@ class Command(BaseCommand):
                     self.stdout.write(self.style.ERROR(f'Error processing movie at index {i}: {str(e)}'))
                     skipped += 1
 
-            self.stdout.write(self.style.SUCCESS(f'Added {count} new movies to database (skipped {skipped} movies)'))
+            self.stdout.write(self.style.SUCCESS(f'Added {count} new movies to database'))
 
         except FileNotFoundError:
             self.stdout.write(self.style.WARNING('Movies data file not found. Run fetch_movies.py first.'))
